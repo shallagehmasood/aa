@@ -21,17 +21,13 @@ jobs:
           cache: true
 
       - name: Install dependencies
-        run: |
-          cd flutter_app
-          flutter pub get
+        run: flutter pub get
 
       - name: Build debug APK
-        run: |
-          cd flutter_app
-          flutter build apk --debug --no-shrink
+        run: flutter build apk --debug --no-shrink
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-debug-apk
-          path: flutter_app/build/app/outputs/flutter-apk/app-debug.apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
