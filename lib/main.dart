@@ -373,4 +373,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-ایا تنظیمات کاربر در سرور ثبت میشود؟
