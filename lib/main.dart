@@ -162,6 +162,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  // متد ارسال تنظیمات
   Future<void> sendSettings() async {
     setState(() {
       isLoading = true;
@@ -177,23 +178,13 @@ class _HomePageState extends State<HomePage> {
         "signals": selectedSignals
       });
 
-      // ارسال درخواست POST به سرور
-      var res = await http.post(
-        url,
-        body: body,
-        headers: {
-          "Content-Type": "application/json", // تعیین نوع محتویات درخواست
-        },
-      );
+      var res = await http.post(url,
+          body: body,
+          headers: {"Content-Type": "application/json"});
 
-      // بررسی پاسخ سرور
       if (res.statusCode == 200) {
         setState(() {
           statusMessage = "✅ تنظیمات با موفقیت ذخیره شد";
-        });
-      } else if (res.statusCode == 403) {
-        setState(() {
-          statusMessage = "❌ دسترسی غیرمجاز";
         });
       } else {
         setState(() {
@@ -245,6 +236,78 @@ class _HomePageState extends State<HomePage> {
                 );
               }).toList(),
             ),
+            SizedBox(height: 16),
+
+            // ---------- سشن‌ها ----------
+            Text("سشن‌ها", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              children: SESSIONS.keys.map((s) {
+                return FilterChip(
+                  label: Text(SESSIONS[s]!),
+                  selected: selectedSessions[s]!,
+                  onSelected: (val) {
+                    setState(() {
+                      selectedSessions[s] = val;
+                    });
+                  },
+                );
+              }).toList(),
+            ),
+            SizedBox(height: 16),
+
+            // ---------- جفت ارزها ----------
+            Text("جفت ارزها", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            SizedBox(height: 8),
+            ...PAIRS.map((pair) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(pair, style: TextStyle(fontSize: 16)),
+                  Wrap(
+                    spacing: 8,
+                    children: TIMEFRAMES.map((tf) {
+                      return FilterChip(
+                        label: Text(tf),
+                        selected: selectedPairs[pair]![tf]!,
+                        onSelected: (val) {
+                          setState(() {
+                            selectedPairs[pair]![tf] = val;
+                          });
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ],
+              );
+            }).toList(),
+            SizedBox(height: 16),
+
+            // ---------- سیگنال‌ها ----------
+            Text("سیگنال‌ها", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            SizedBox(height: 8),
+            ...PAIRS.map((pair) {
+              return Row(
+                children: [
+                  Text(pair, style: TextStyle(fontSize: 16)),
+                  DropdownButton<String>(
+                    value: selectedSignals[pair],
+                    items: SIGNALS.map((signal) {
+                      return DropdownMenuItem<String>(
+                        value: signal,
+                        child: Text(signal),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedSignals[pair] = value!;
+                      });
+                    },
+                  ),
+                ],
+              );
+            }).toList(),
             SizedBox(height: 16),
 
             // ---------- وضعیت ارسال ----------
