@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // --- ثابت‌ها ---
 const PAIRS = [
@@ -62,14 +63,11 @@ class _UserIdPageState extends State<UserIdPage> {
       statusMessage = "";
     });
     try {
-      // کدگذاری userId به URL
       var encodedUserId = Uri.encodeComponent(userId);
       var url = Uri.parse("http://178.63.171.244:5000/check_whitelist?user_id=$encodedUserId");
 
-      // ارسال درخواست به سرور
       var res = await http.get(url);
 
-      // بررسی پاسخ سرور
       if (res.statusCode == 200) {
         var data = jsonDecode(res.body);
         return data["authorized"] == true;
@@ -183,6 +181,10 @@ class _HomePageState extends State<HomePage> {
           headers: {"Content-Type": "application/json"});
 
       if (res.statusCode == 200) {
+        // ذخیره در حافظه گوشی
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('settings', body);  // ذخیره تنظیمات در حافظه
+
         setState(() {
           statusMessage = "✅ تنظیمات با موفقیت ذخیره شد";
         });
@@ -202,6 +204,109 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  // نمایش باتن شیت برای تایم فریم‌ها
+  void showTimeframeBottomSheet(String pair) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Column(
+          children: [
+            Text(pair, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Wrap(
+              spacing: 8,
+              children: TIMEFRAMES.map((tf) {
+                return FilterChip(
+                  label: Text(tf),
+                  selected: selectedPairs[pair]![tf]!,
+                  onSelected: (val) {
+                    setState(() {
+                      selectedPairs[pair]![tf] = val;
+                    });
+                  },
+                );
+              }).toList(),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedSignals[pair] = "BUY";
+                    });
+                  },
+                  child: Text("BUY"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedSignals[pair] = "SELL";
+                    });
+                  },
+                  child: Text("SELL"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedSignals[pair] = "BUYSELL";
+                    });
+                  },
+                  child: Text("BUYSELL"),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // نمایش باتن شیت برای مودها
+  void showModeBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Wrap(
+          spacing: 8,
+          children: MODES.keys.map((m) {
+            return FilterChip(
+              label: Text(MODES[m]!),
+              selected: selectedModes[m]!,
+              onSelected: (val) {
+                setState(() {
+                  selectedModes[m] = val;
+                });
+              },
+            );
+          }).toList(),
+        );
+      },
+    );
+  }
+
+  // نمایش باتن شیت برای سشن‌ها
+  void showSessionBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Wrap(
+          spacing: 8,
+          children: SESSIONS.keys.map((s) {
+            return FilterChip(
+              label: Text(SESSIONS[s]!),
+              selected: selectedSessions[s]!,
+              onSelected: (val) {
+                setState(() {
+                  selectedSessions[s] = val;
+                });
+              },
+            );
+          }).toList(),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -211,103 +316,45 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ---------- مودها ----------
+            // ---------- مودها ---------- 
             Text("مودها", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
-              children: MODES.keys.map((m) {
-                return FilterChip(
-                  label: Text(MODES[m]!),
-                  selected: selectedModes[m]!,
-                  onSelected: (val) {
-                    setState(() {
-                      if (m == "A1") {
-                        selectedModes["A1"] = val;
-                        if (val) selectedModes["A2"] = false;
-                      } else if (m == "A2") {
-                        selectedModes["A2"] = val;
-                        if (val) selectedModes["A1"] = false;
-                      } else {
-                        selectedModes[m] = val;
-                      }
-                    });
-                  },
-                );
-              }).toList(),
+            ElevatedButton(
+              onPressed: showModeBottomSheet,
+              child: Text("انتخاب مودها"),
             ),
             SizedBox(height: 16),
 
             // ---------- سشن‌ها ----------
             Text("سشن‌ها", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
-              children: SESSIONS.keys.map((s) {
-                return FilterChip(
-                  label: Text(SESSIONS[s]!),
-                  selected: selectedSessions[s]!,
-                  onSelected: (val) {
-                    setState(() {
-                      selectedSessions[s] = val;
-                    });
-                  },
-                );
-              }).toList(),
+            ElevatedButton(
+              onPressed: showSessionBottomSheet,
+              child: Text("انتخاب سشن‌ها"),
             ),
             SizedBox(height: 16),
 
             // ---------- جفت ارزها ----------
             Text("جفت ارزها", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             SizedBox(height: 8),
-            ...PAIRS.map((pair) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(pair, style: TextStyle(fontSize: 16)),
-                  Wrap(
-                    spacing: 8,
-                    children: TIMEFRAMES.map((tf) {
-                      return FilterChip(
-                        label: Text(tf),
-                        selected: selectedPairs[pair]![tf]!,
-                        onSelected: (val) {
-                          setState(() {
-                            selectedPairs[pair]![tf] = val;
-                          });
-                        },
-                      );
-                    }).toList(),
+            GridView.builder(
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+              ),
+              itemCount: PAIRS.length,
+              itemBuilder: (context, index) {
+                String pair = PAIRS[index];
+                return GestureDetector(
+                  onTap: () => showTimeframeBottomSheet(pair),
+                  child: Card(
+                    child: Center(child: Text(pair)),
                   ),
-                ],
-              );
-            }).toList(),
-            SizedBox(height: 16),
-
-            // ---------- سیگنال‌ها ----------
-            Text("سیگنال‌ها", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 8),
-            ...PAIRS.map((pair) {
-              return Row(
-                children: [
-                  Text(pair, style: TextStyle(fontSize: 16)),
-                  DropdownButton<String>(
-                    value: selectedSignals[pair],
-                    items: SIGNALS.map((signal) {
-                      return DropdownMenuItem<String>(
-                        value: signal,
-                        child: Text(signal),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedSignals[pair] = value!;
-                      });
-                    },
-                  ),
-                ],
-              );
-            }).toList(),
+                );
+              },
+            ),
             SizedBox(height: 16),
 
             // ---------- وضعیت ارسال ----------
