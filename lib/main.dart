@@ -122,7 +122,7 @@ class _UserIdPageState extends State<UserIdPage> {
             ),
             SizedBox(height: 20),
             if (statusMessage.isNotEmpty)
-              Text(statusMessage, style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+              Text(statusMessage, style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold))
           ],
         ),
       ),
@@ -224,7 +224,7 @@ class _HomePageState extends State<HomePage> {
                     });
                   },
                 );
-              }).toList(), // اصلاح شده
+              }).toList(),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -278,7 +278,7 @@ class _HomePageState extends State<HomePage> {
                 });
               },
             );
-          }).toList(), // اصلاح شده
+          }).toList(),
         );
       },
     );
@@ -301,7 +301,7 @@ class _HomePageState extends State<HomePage> {
                 });
               },
             );
-          }).toList(), // اصلاح شده
+          }).toList(),
         );
       },
     );
@@ -310,70 +310,67 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('تنظیمات کاربر ${widget.userId}')),
-      body: Padding(
+      appBar: AppBar(title: Text("تنظیمات First Hidden")),
+      body: SingleChildScrollView(
         padding: EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("انتخاب مودها:", style: TextStyle(fontSize: 18)),
-            Wrap(
-              spacing: 8,
-              children: MODES.keys.map((mode) {
-                return FilterChip(
-                  label: Text(MODES[mode]!),
-                  selected: selectedModes[mode]!,
-                  onSelected: (val) {
-                    setState(() {
-                      selectedModes[mode] = val;
-                    });
-                  },
-                );
-              }).toList(), // اصلاح شده
-            ),
-            SizedBox(height: 20),
-            Text("انتخاب سشن‌ها:", style: TextStyle(fontSize: 18)),
-            Wrap(
-              spacing: 8,
-              children: SESSIONS.keys.map((session) {
-                return FilterChip(
-                  label: Text(SESSIONS[session]!),
-                  selected: selectedSessions[session]!,
-                  onSelected: (val) {
-                    setState(() {
-                      selectedSessions[session] = val;
-                    });
-                  },
-                );
-              }).toList(), // اصلاح شده
-            ),
-            SizedBox(height: 20),
-            Text("انتخاب جفت‌ها:", style: TextStyle(fontSize: 18)),
-            Expanded(
-              child: ListView.builder(
-                itemCount: PAIRS.length,
-                itemBuilder: (context, index) {
-                  String pair = PAIRS[index];
-                  return ListTile(
-                    title: Text(pair),
-                    onTap: () => showTimeframeBottomSheet(pair),
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: 20),
+            // ---------- مودها ---------- 
+            Text("مودها", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            SizedBox(height: 8),
             ElevatedButton(
-              onPressed: isLoading ? null : sendSettings,
-              child: isLoading ? CircularProgressIndicator() : Text("ارسال تنظیمات"),
+              onPressed: showModeBottomSheet,
+              child: Text("انتخاب مودها"),
             ),
-            if (statusMessage.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Text(statusMessage, style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+            SizedBox(height: 16),
+
+            // ---------- سشن‌ها ----------
+            Text("سشن‌ها", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: showSessionBottomSheet,
+              child: Text("انتخاب سشن‌ها"),
+            ),
+            SizedBox(height: 16),
+
+            // ---------- جفت ارزها ----------
+            Text("جفت ارزها", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            SizedBox(height: 8),
+            GridView.builder(
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
               ),
+              itemCount: PAIRS.length,
+              itemBuilder: (context, index) {
+                String pair = PAIRS[index];
+                return GestureDetector(
+                  onTap: () => showTimeframeBottomSheet(pair),
+                  child: Card(
+                    child: Center(child: Text(pair)),
+                  ),
+                );
+              },
+            ),
+            SizedBox(height: 16),
+
+            // ---------- وضعیت ارسال ----------
+            isLoading
+                ? Center(child: CircularProgressIndicator())
+                : ElevatedButton(
+                    onPressed: sendSettings,
+                    child: Text("ذخیره تنظیمات"),
+                  ),
+            SizedBox(height: 16),
+            if (statusMessage.isNotEmpty)
+              Text(statusMessage, style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
           ],
         ),
       ),
     );
   }
 }
+ایا تنظیمات کاربر در سرور ثبت میشود؟
