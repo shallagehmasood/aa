@@ -144,6 +144,7 @@ class _HomePageState extends State<HomePage> {
   Map<String, Map<String, bool>> selectedPairs = {};
   Map<String, String> selectedSignals = {};
   bool isLoading = false;
+  bool isSettingsSaved = false;  // متغیر برای ذخیره وضعیت ذخیره شدن تنظیمات
   String statusMessage = "";
 
   @override
@@ -187,6 +188,7 @@ class _HomePageState extends State<HomePage> {
 
         setState(() {
           statusMessage = "✅ تنظیمات با موفقیت ذخیره شد";
+          isSettingsSaved = true;  // تنظیمات با موفقیت ذخیره شدند
         });
       } else {
         setState(() {
@@ -217,7 +219,7 @@ class _HomePageState extends State<HomePage> {
               children: TIMEFRAMES.map((tf) {
                 return FilterChip(
                   label: Text(tf),
-                  selected: selectedPairs[pair]![tf]!,
+                  selected: selectedPairs[pair]![tf]!),
                   onSelected: (val) {
                     setState(() {
                       selectedPairs[pair]![tf] = val;
@@ -271,7 +273,7 @@ class _HomePageState extends State<HomePage> {
           children: MODES.keys.map((m) {
             return FilterChip(
               label: Text(MODES[m]!),
-              selected: selectedModes[m]!,
+              selected: selectedModes[m]!),
               onSelected: (val) {
                 setState(() {
                   selectedModes[m] = val;
@@ -294,7 +296,7 @@ class _HomePageState extends State<HomePage> {
           children: SESSIONS.keys.map((s) {
             return FilterChip(
               label: Text(SESSIONS[s]!),
-              selected: selectedSessions[s]!,
+              selected: selectedSessions[s]!),
               onSelected: (val) {
                 setState(() {
                   selectedSessions[s] = val;
@@ -316,7 +318,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ---------- مودها ---------- 
+            // ---------- مودها ----------
             Text("مودها", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             SizedBox(height: 8),
             ElevatedButton(
@@ -361,8 +363,10 @@ class _HomePageState extends State<HomePage> {
             isLoading
                 ? Center(child: CircularProgressIndicator())
                 : ElevatedButton(
-                    onPressed: sendSettings,
-                    child: Text("ذخیره تنظیمات"),
+                    onPressed: isSettingsSaved
+                        ? null // اگر تنظیمات ذخیره شده است، دکمه غیرفعال می‌شود
+                        : sendSettings,
+                    child: Text(isSettingsSaved ? "تنظیمات ذخیره شد" : "ذخیره تنظیمات"),
                   ),
             SizedBox(height: 16),
             if (statusMessage.isNotEmpty)
