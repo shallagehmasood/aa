@@ -1,44 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/setup_screen.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  final prefs = await SharedPreferences.getInstance();
-  final isDark = prefs.getBool('isDark') ?? false;
-  runApp(MemoryGameApp(isDark: isDark));
+void main() {
+  runApp(MyApp());
 }
 
-class MemoryGameApp extends StatefulWidget {
-  final bool isDark;
-  MemoryGameApp({required this.isDark});
-
+class MyApp extends StatefulWidget {
   @override
-  State<MemoryGameApp> createState() => _MemoryGameAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
-class _MemoryGameAppState extends State<MemoryGameApp> {
-  late bool isDark;
+class _MyAppState extends State<MyApp> {
+  bool isDark = false;
 
-  @override
-  void initState() {
-    super.initState();
-    isDark = widget.isDark;
-  }
-
-  void toggleTheme() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() => isDark = !isDark);
-    await prefs.setBool('isDark', isDark);
+  void toggleTheme() {
+    setState(() {
+      isDark = !isDark;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'بازی حافظه فوتبالی',
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
-      themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
+      debugShowCheckedModeBanner: false,
+      theme: isDark ? ThemeData.dark() : ThemeData.light(),
       home: SetupScreen(onToggleTheme: toggleTheme, isDark: isDark),
     );
   }
