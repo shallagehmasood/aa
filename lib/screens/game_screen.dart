@@ -34,7 +34,7 @@ class _GameScreenState extends State<GameScreen> {
     "میرالم پیانیچ", "ادین ژکو", "دوشان ولاهوویچ", "سرگئی میلینکوویچ ساویچ", "الکساندر میتروویچ",
     "چیرو ایموبیله", "لورنزو اینسینیه", "فدریکو کیه‌زا", "مارکو وراتی", "لئوناردو بونوچی",
     "جورجو کیه‌لینی", "تیاگو سیلوا", "رودریگو", "رافینیا", "گابریل ژسوس", "ریچارلیسون"
-  ]; // لیست 100 بازیکن فارسی
+  ];
 
   List<CardModel> cards = [];
   List<int> flippedIndexes = [];
@@ -77,34 +77,28 @@ class _GameScreenState extends State<GameScreen> {
     if (cards.every((c) => c.isMatched)) {
       timer?.cancel();
       final prefs = await SharedPreferences.getInstance();
-
       if (bestMoves == null || moves < bestMoves!) {
         await prefs.setInt('bestMoves_${widget.pairCount}', moves);
         bestMoves = moves;
       }
-
       if (bestTime == null || seconds < bestTime!) {
         await prefs.setInt('bestTime_${widget.pairCount}', seconds);
         bestTime = seconds;
       }
-
       setState(() {});
     }
   }
 
   void onCardTap(int index) {
     if (cards[index].isFlipped || cards[index].isMatched || flippedIndexes.length == 2) return;
-
     setState(() {
       cards[index].isFlipped = true;
       flippedIndexes.add(index);
     });
-
     if (flippedIndexes.length == 2) {
       moves++;
       final i1 = flippedIndexes[0];
       final i2 = flippedIndexes[1];
-
       if (cards[i1].title == cards[i2].title) {
         setState(() {
           cards[i1].isMatched = true;
