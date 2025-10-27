@@ -3,5 +3,9 @@ class CardModel {
   bool isFlipped;
   bool isMatched;
 
-  CardModel({required this.title, this.isFlipped = false, this.isMatched = false});
+  CardModel({
+    required this.title,
+    this.isFlipped = false,
+    this.isMatched = false,
+  });
 }
