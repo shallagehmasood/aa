@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../services/api_service.dart';
 import 'pair_settings_screen.dart';
 import 'modes_screen.dart';
