@@ -7,7 +7,6 @@ import 'modes_screen.dart';
 import 'sessions_screen.dart';
 import 'alerts_screen.dart';
 
-// لیست جفت‌ارزها (همانند کد تلگرام)
 const List<String> PAIRS = [
   "EURUSD", "GBPUSD", "USDJPY", "USDCHF",
   "AUDUSD", "AUDJPY", "CADJPY", "EURJPY", "BTCUSD",
@@ -37,7 +36,7 @@ class _MainScreenState extends State<MainScreen> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('اولین هیدن'),
+          title: const Text('Alert_X'),
           bottom: const TabBar(
             tabs: [
               Tab(text: 'سیگنال‌ها'),
@@ -67,8 +66,6 @@ class _MainScreenState extends State<MainScreen> {
           children: [
             const Text('لطفاً یک جفت ارز، مود یا سشن انتخاب کنید:', style: TextStyle(fontSize: 16)),
             const SizedBox(height: 16),
-
-            // دکمه‌های مود و سشن
             Wrap(
               spacing: 8,
               runSpacing: 8,
@@ -78,8 +75,6 @@ class _MainScreenState extends State<MainScreen> {
               ],
             ),
             const SizedBox(height: 20),
-
-            // لیست جفت‌ارزها به صورت شبکه‌ای
             Expanded(
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -160,7 +155,12 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _buildLinkButton(String label, String url) {
     return ElevatedButton.icon(
-      onPressed: () => launchUrl(Uri.parse(url)),
+      onPressed: () async {
+        final uri = Uri.parse(url.trim());
+        if (!await launchUrl(uri)) {
+          Fluttertoast.showToast(msg: 'عدم توانایی در باز کردن لینک');
+        }
+      },
       icon: const Icon(Icons.link, size: 16),
       label: Text(label),
       style: ElevatedButton.styleFrom(backgroundColor: Colors.green.shade400),
