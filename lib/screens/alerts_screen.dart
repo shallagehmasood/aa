@@ -20,7 +20,6 @@ class _AlertsScreenState extends State<AlertsScreen> {
   void initState() {
     super.initState();
     _loadAlerts();
-    // هر 5 ثانیه یک‌بار چک کن
     Future.doWhile(() async {
       await Future.delayed(const Duration(seconds: 5));
       if (mounted) _loadAlerts();
