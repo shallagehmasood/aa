@@ -33,7 +33,9 @@ class _PairSettingsScreenState extends State<PairSettingsScreen> {
     try {
       final data = await _api.getSettings(widget.userId);
       final timeframes = (data['timeframes'] as Map?) ?? {};
-      _pairData = (timeframes[widget.pair] as Map?) ?? {'signal': 'BUYSELL'};
+      _pairData = Map<String, dynamic>.from(
+  (timeframes[widget.pair] as Map?) ?? {'signal': 'BUYSELL'}
+);
       setState(() => _loading = false);
     } catch (e) {
       Fluttertoast.showToast(msg: 'خطا در بارگذاری تنظیمات');
