@@ -1,5 +1,5 @@
-name: first_hidden_app
-description: "اپ جایگزین بات اولین هیدن"
+name: alert_x_app
+description: "اپ جایگزین بات اولین هیدن - نسخه Alert_X"
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ^1.5.0
+  http: ^0.16.0
   shared_preferences: ^2.2.2
   fluttertoast: ^8.2.4
   url_launcher: ^6.2.5
@@ -21,8 +21,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  # (اختیاری) برای پشتیبانی بهتر از فارسی، فونت Vazirmatn را اضافه کنید
-  # fonts:
-  #   - family: Vazirmatn
-  #     fonts:
-  #       - asset: assets/fonts/Vazirmatn-Regular.ttf
