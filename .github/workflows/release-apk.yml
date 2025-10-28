@@ -2,31 +2,40 @@ name: Build Release APK
 
 on:
   push:
-    branches: [ Aert_X ]
-  workflow_dispatch:
+    branches: [ "Aert_x" ]  # یا شاخه مورد نظرت، مثلاً release
+  workflow_dispatch:      # امکان اجرای دستی از GitHub UI
 
 jobs:
   build:
-    name: Build APK
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Flutter
+      - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
-          cache: true
+          flutter-version: '3.24.0'  # یا نسخه‌ای که استفاده می‌کنی
+          channel: 'stable'
 
-      - name: Install dependencies
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Verify Flutter environment
+        run: flutter doctor
+
+      - name: Get dependencies
         run: flutter pub get
 
       - name: Build release APK
         run: flutter build apk --release
 
-      - name: Upload release APK artifact
+      - name: Upload APK as artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release-apk
