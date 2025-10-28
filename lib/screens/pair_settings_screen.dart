@@ -34,8 +34,8 @@ class _PairSettingsScreenState extends State<PairSettingsScreen> {
       final data = await _api.getSettings(widget.userId);
       final timeframes = (data['timeframes'] as Map?) ?? {};
       _pairData = Map<String, dynamic>.from(
-  (timeframes[widget.pair] as Map?) ?? {'signal': 'BUYSELL'}
-);
+        (timeframes[widget.pair] as Map?) ?? {'signal': 'BUYSELL'}
+      );
       setState(() => _loading = false);
     } catch (e) {
       Fluttertoast.showToast(msg: 'خطا در بارگذاری تنظیمات');
@@ -80,7 +80,6 @@ class _PairSettingsScreenState extends State<PairSettingsScreen> {
           padding: const EdgeInsets.all(12),
           child: Column(
             children: [
-              // تایم‌فریم‌ها
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
@@ -96,7 +95,6 @@ class _PairSettingsScreenState extends State<PairSettingsScreen> {
                 ],
               ),
               const SizedBox(height: 20),
-              // نوع سیگنال
               const Text('نوع سیگنال:', style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 10),
               Wrap(
