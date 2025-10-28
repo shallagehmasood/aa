@@ -2,7 +2,7 @@ name: Build Release APK for Alert_X
 
 on:
   push:
-    branches: [ "Alert_X" ]  # فقط روی شاخه Alert_X اجرا شود
+    branches: [ "Alert_X" ]  # فقط روی شاخه  Alert_X اجرا شود
   workflow_dispatch:         # امکان اجرای دستی از طریق GitHub UI
 
 jobs:
