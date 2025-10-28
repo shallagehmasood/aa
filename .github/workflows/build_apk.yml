@@ -20,24 +20,17 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Ensure CardModel exists
+      - name: Ensure card_model.dart exists
         run: |
           mkdir -p lib/models
           if [ ! -f lib/models/card_model.dart ]; then
-            echo "Creating lib/models/card_model.dart..."
-            cat <<EOT > lib/models/card_model.dart
-class CardModel {
-  final String title;
-  bool isFlipped;
-  bool isMatched;
-
-  CardModel({
-    required this.title,
-    this.isFlipped = false,
-    this.isMatched = false,
-  });
-}
-EOT
+            echo "class CardModel {" > lib/models/card_model.dart
+            echo "  final String title;" >> lib/models/card_model.dart
+            echo "  bool isFlipped;" >> lib/models/card_model.dart
+            echo "  bool isMatched;" >> lib/models/card_model.dart
+            echo "" >> lib/models/card_model.dart
+            echo "  CardModel({required this.title, this.isFlipped = false, this.isMatched = false});" >> lib/models/card_model.dart
+            echo "}" >> lib/models/card_model.dart
           fi
 
       - name: Install dependencies
