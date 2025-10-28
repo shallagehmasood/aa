@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../services/api_service.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../services/api_service.dart';
 
 const Map<String, String> DISPLAY_MODES = {
   "A1": "هیدن اول",
@@ -65,7 +65,7 @@ class _ModesScreenState extends State<ModesScreen> {
 
     try {
       await _api.saveSettings(widget.userId, {
-        'timeframes': {}, // will be merged on server side
+        'timeframes': {},
         'modes': _modes,
         'sessions': {},
       });
@@ -85,7 +85,6 @@ class _ModesScreenState extends State<ModesScreen> {
         body: ListView(
           padding: const EdgeInsets.all(12),
           children: [
-            // A1 و A2 در یک سطر
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -94,7 +93,6 @@ class _ModesScreenState extends State<ModesScreen> {
               ],
             ),
             const Divider(height: 30),
-            // سایر مودها
             for (var mode in ['B', 'C', 'D', 'E', 'F', 'G'])
               _buildModeTile(mode, DISPLAY_MODES[mode]!),
           ],
