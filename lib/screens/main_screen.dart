@@ -16,7 +16,6 @@ const List<String> PAIRS = [
 
 class MainScreen extends StatefulWidget {
   final String userId;
-
   const MainScreen({super.key, required this.userId});
 
   @override
@@ -132,21 +131,21 @@ class _MainScreenState extends State<MainScreen> {
         child: ListView(
           children: [
             const Text(
-              'دوستانی که روی سیستم فرکتالی یا پرایس استاد امینو مسلط هستید '
-              'حتما کلیپ های پین شده و کلا کانال رو مرور کنید اگه ارتباط گرفتید، '
-              'تلگرام پیام بدید خبرای خوبی دارم',
+              'دوستانی که روی سیستم فرکتالی یا پرایس استاد امینو مسلط هستند '
+              'حتما کلیپ های پین شده و کانال را مرور کنند. اگر ارتباط گرفتید، '
+              'تلگرام پیام بدید — خبرهای خوبی دارم.',
               style: TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 20),
             _buildLinkButton('مشاهده کانال اولین هیدن', 'https://t.me/avalinhidensignall/2703'),
             const SizedBox(height: 16),
-            _buildLinkButton('آموزش نحوه بک‌تست (کلیپ)', 'https://t.me/avalinhidensignall/2847'),
+            _buildLinkButton('آموزش نحوه بک‌تست', 'https://t.me/avalinhidensignall/2847'),
             const SizedBox(height: 16),
-            _buildLinkButton('عضویت در بات اولین هیدن VIP', 'https://t.me/Amino_First_Hidden_Alert_bot'),
+            _buildLinkButton('بات اولین هیدن VIP', 'https://t.me/Amino_First_Hidden_Alert_bot'),
             const SizedBox(height: 16),
-            _buildLinkButton('بات اندیکاتورهای فرکتالی (رایگان)', 'https://t.me/Fractal_Indicators_Alert_bot'),
+            _buildLinkButton('بات اندیکاتورهای فرکتالی', 'https://t.me/Fractal_Indicators_Alert_bot'),
             const SizedBox(height: 16),
-            _buildLinkButton('بات ایچیموکو (رایگان)', 'https://t.me/Ichimoku_Alerts_bot'),
+            _buildLinkButton('بات ایچیموکو', 'https://t.me/Ichimoku_Alerts_bot'),
           ],
         ),
       ),
