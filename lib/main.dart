@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // --- ثابت‌ها ---
 const PAIRS = [
   "EURUSD", "GBPUSD", "USDJPY", "USDCHF", "AUDUSD", "AUDJPY", "CADJPY", "EURJPY",
-  "BTCUSD", "USDCAD", "GBPJPY", "ADAUSD", "BRENT", "XAUUSD", "XAGUSD", "ETHUSD",
+  "BTCUSD", "USDCAD", "GBPJPY", "ADA", "BRENT", "XAUUSD", "XAGUSD", "ETHUSD",
   "DowJones30", "Nasdaq100",
 ];
 const MODES = {
