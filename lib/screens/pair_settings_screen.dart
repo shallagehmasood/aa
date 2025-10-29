@@ -11,7 +11,6 @@ const List<String> TIMEFRAMES = [
 class PairSettingsScreen extends StatefulWidget {
   final String userId;
   final String pair;
-
   const PairSettingsScreen({super.key, required this.userId, required this.pair});
 
   @override
