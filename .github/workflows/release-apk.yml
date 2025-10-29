@@ -26,10 +26,13 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
+      - name: Create Flutter project structure (fixes missing Android files)
+        run: flutter create .
+
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Build release APK
+      - name: Build release APK (full, non-split)
         run: flutter build apk --release
 
       - name: Upload APK as artifact
