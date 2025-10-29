@@ -11,7 +11,6 @@ const Map<String, String> DISPLAY_SESSIONS = {
 
 class SessionsScreen extends StatefulWidget {
   final String userId;
-
   const SessionsScreen({super.key, required this.userId});
 
   @override
