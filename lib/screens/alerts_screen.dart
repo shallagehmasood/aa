@@ -4,7 +4,6 @@ import '../services/api_service.dart';
 
 class AlertsScreen extends StatefulWidget {
   final String userId;
-
   const AlertsScreen({super.key, required this.userId});
 
   @override
@@ -50,7 +49,6 @@ class _AlertsScreenState extends State<AlertsScreen> {
     if (_loading && _alerts.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
-
     if (_alerts.isEmpty) {
       return const Center(child: Text('سیگنالی دریافت نشده است.'));
     }
