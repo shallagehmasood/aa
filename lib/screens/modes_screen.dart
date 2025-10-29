@@ -15,7 +15,6 @@ const Map<String, String> DISPLAY_MODES = {
 
 class ModesScreen extends StatefulWidget {
   final String userId;
-
   const ModesScreen({super.key, required this.userId});
 
   @override
